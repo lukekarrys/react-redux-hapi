@@ -3,8 +3,15 @@
 const Faker = require('faker');
 const Nock = require('nock');
 const Config = require('getconfig');
+const { expect } = require('code');
 
 exports.nockApi = () => Nock(Config.api.baseURL);
+
+exports.nockDone = () => new Promise((resolve) => {
+  expect(Nock.activeMocks().length).to.equal(0);
+  expect(Nock.pendingMocks().length).to.equal(0);
+  resolve();
+});
 
 exports.locations = (count = 7) => [...Array(count)].map(() => ({
   distance: Faker.random.number(),

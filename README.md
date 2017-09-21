@@ -20,5 +20,5 @@ Make sure any production config values are set in [`client/config/production.js`
 ```sh
 npm install
 NODE_ENV=production npm run build
-NODE_ENV=production PORT=4000 npm start
+NODE_ENV=production npm start
 ```

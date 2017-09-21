@@ -9,14 +9,6 @@ const Assets = require('./lib/assets');
 Config.hapi.cache.engine = require(Config.hapi.cache.engine);
 const server = new Hapi.Server(Config.hapi);
 
-// $PORT is not set during install processes, so we don't
-// include it in the config, hence this if statement
-// $lab:coverage:off$
-if (Config.getconfig.env === 'production') {
-  Config.connection.public.port = process.env.PORT;
-}
-// $lab:coverage:on$
-
 server.connection(Config.connection.public);
 
 // $lab:coverage:off$

@@ -24,7 +24,7 @@ class Location extends React.Component {
       <div>
         <h1>{location.title}</h1>
         <h2>Forecast</h2>
-        {(location.consolidated_weather || []).map((forecast) => (
+        {location.consolidated_weather.map((forecast) => (
           <div key={forecast.id}>
             <h3>{forecast.applicable_date}</h3>
             <h4>{forecast.min_temp} / {forecast.max_temp}</h4>
