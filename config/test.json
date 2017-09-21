@@ -1,0 +1,18 @@
+{
+  "api": {
+    "baseURL": "https://mock-api-test-url.com/"
+  },
+  "hapi": {
+    "cache": {
+      "engine": "catbox-memory"
+    }
+  },
+  "good": {
+    "reporters": {}
+  },
+  "connection": {
+    "public": {
+      "labels": "public"
+    }
+  }
+}

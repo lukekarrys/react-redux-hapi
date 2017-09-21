@@ -1,0 +1,8 @@
+doctype html
+html(lang="en")
+  head
+  body
+    h1 Error
+    h2 #{statusCode} #{errorName}
+    if stack
+      pre !{stack}

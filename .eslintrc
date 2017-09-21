@@ -1,0 +1,31 @@
+{
+  "extends": "andyet-frontend/react-webpack",
+  "globals": {
+    "Promise": false
+  },
+  "rules": {
+    "camelcase": 0
+  },
+  "overrides": [
+    {
+      "files": [
+        "lib/**/*.js",
+        "test/**/*.js",
+        "server.js",
+        "webpack.config.js"
+      ],
+      "parser": "espree",
+      "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "script"
+      },
+      "env": {
+        "node": true
+      },
+      "rules": {
+        "no-console": 0,
+        "strict": [2, "safe"]
+      }
+    }
+  ]
+}

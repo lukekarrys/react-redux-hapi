@@ -1,0 +1,8 @@
+doctype html
+html(lang="en")
+  head
+  body
+    #root !{html}
+    script.
+      __INITIAL_DATA__=!{JSON.stringify(initialData)}
+    script(src=`/${assets.app.js}`)

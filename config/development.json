@@ -1,0 +1,35 @@
+{
+  "connection": {
+    "public": {
+      "port": 3000,
+      "labels": "public"
+    }
+  },
+  "good": {
+    "reporters": {
+      "console": [
+        {
+          "module": "good-squeeze",
+          "name": "Squeeze",
+          "args": [
+            {
+              "log": "*",
+              "response": "*",
+              "request": "*",
+              "error": "*"
+            }
+          ]
+        },
+        {
+          "module": "good-console"
+        },
+        "stdout"
+      ]
+    }
+  },
+  "hapi": {
+    "cache": {
+      "engine": "catbox-memory"
+    }
+  }
+}
