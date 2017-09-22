@@ -12,7 +12,16 @@ class Locations extends React.Component {
   }
 
   render() {
-    const { locations } = this.props;
+    const { locations, syncing } = this.props;
+
+    if (syncing) {
+      return (
+        <div>
+          <h1>Loading</h1>
+        </div>
+      );
+    }
+
     return (
       <div>
         <ul>
@@ -28,7 +37,8 @@ class Locations extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  locations: values(state.locations.entities)
+  locations: values(state.locations.entities),
+  syncing: state.locations.syncing
 });
 
 const mapPropsToDispatch = {

@@ -42,7 +42,6 @@ exports.server = server.register([{
 
   server.route(Routes);
 }).then(() => {
-  // coverage disabled because module.parent is always defined in tests
   // $lab:coverage:off$
   if (module.parent) {
     return server.initialize().then(() => server);
