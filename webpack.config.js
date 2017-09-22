@@ -29,6 +29,9 @@ module.exports = {
 
   devtool: isDev ? 'cheap-module-eval-source-map' : 'source-map',
   devServer: Object.assign({}, Config.webpackDev, {
+    // The webpack output always confuses me since it makes it shows
+    // a different url that isnt used except behind-the-scenes by the server
+    // so I opted for no output at all. Errors should still show in the browser console.
     quiet: true,
     noInfo: true,
     // webpack-dev-server isn't used to serve any other assets

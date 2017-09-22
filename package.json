@@ -75,10 +75,10 @@
     "url": "git+https://github.com/lukekarrys/react-redux-hapi.git"
   },
   "scripts": {
-    "build": "webpack",
+    "build": "NODE_ENV=production webpack",
     "dev": "run-p start webpack-dev",
     "lint": "eslint --ext .js,.jsx .",
-    "start": "node server",
+    "start": "NODE_ENV=production node server",
     "test": "lab -a code -v -e test -I __core-js_shared__ -t 50",
     "validate": "npm ls",
     "webpack-dev": "webpack-dev-server"

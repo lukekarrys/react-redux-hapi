@@ -16,7 +16,7 @@ process.on('SIGTERM', () => {
   server.stop({ timeout: Config.shutdownTimeout }).then(() => process.exit(0));
 });
 
-server.connection(Config.connection.public);
+server.connection(Object.assign({ port: process.env.PORT || 3000 }, Config.connection.public));
 server.on('request-error', (__, m) => console.log(m.stack));
 server.ext('onPreResponse', RenderError);
 
