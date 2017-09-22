@@ -1,3 +1,5 @@
+/* eslint no-process-exit:0 */
+
 'use strict';
 
 const Config = require('getconfig');
@@ -9,18 +11,13 @@ const Assets = require('./lib/assets');
 Config.hapi.cache.engine = require(Config.hapi.cache.engine);
 const server = new Hapi.Server(Config.hapi);
 
-server.connection(Config.connection.public);
-
-// $lab:coverage:off$
 process.on('SIGTERM', () => {
   server.log(['info', 'shutdown'], 'Graceful shutdown');
-  // eslint-disable-next-line no-process-exit
   server.stop({ timeout: Config.shutdownTimeout }).then(() => process.exit(0));
 });
 
+server.connection(Config.connection.public);
 server.on('request-error', (__, m) => console.log(m.stack));
-// $lab:coverage:on$
-
 server.ext('onPreResponse', RenderError);
 
 exports.server = server.register([{
@@ -42,21 +39,16 @@ exports.server = server.register([{
 
   server.route(Routes);
 }).then(() => {
-  // $lab:coverage:off$
   if (module.parent) {
     return server.initialize().then(() => server);
   }
 
-  return server.start().then(() => {
-    server.connections.forEach((connection) => {
-      server.log(['info', 'startup'], `${connection.info.uri} ${connection.settings.labels}`);
-    });
-  });
-  // $lab:coverage:on$
+  return server.start().then(() =>
+    server.connections.forEach((connection) =>
+      server.log(['info', 'startup'], `${connection.info.uri} ${connection.settings.labels}`)
+    )
+  );
 }).catch((err) => {
-  // coverage disabled due to difficulty in faking a throw
-  // $lab:coverage:off$
   console.error(err.stack || err);
-  process.exit(1); // eslint-disable-line no-process-exit
-  // $lab:coverage:on$
+  process.exit(1);
 });

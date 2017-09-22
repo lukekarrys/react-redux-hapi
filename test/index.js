@@ -19,7 +19,7 @@ describe('Basic page tests', () => {
       expect(res.result).to.include('<script>__INITIAL_DATA__=');
       expect(res.result).to.include('data-react-checksum');
       return res.result;
-    }).then(console.log);
+    });
   });
 
   it('renders a location page', () => {
@@ -31,6 +31,6 @@ describe('Basic page tests', () => {
       expect(res.result).to.include('<script>__INITIAL_DATA__=');
       expect(res.result).to.include('data-react-checksum');
       return res.result;
-    }).then(console.log);
+    });
   });
 });
