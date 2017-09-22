@@ -45,7 +45,7 @@ exports.server = server.register([{
 
   return server.start().then(() =>
     server.connections.forEach((connection) =>
-      server.log(['info', 'startup'], `${connection.info.uri} ${connection.settings.labels}`)
+      server.log(['info', 'startup'], `${connection.info.protocol}://${connection.info.address}:${connection.info.port} ${connection.settings.labels}`)
     )
   );
 }).catch((err) => {

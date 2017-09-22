@@ -17,6 +17,7 @@ export default (schema) => (state = initialState, action) => {
 
   case types.fetchSuccess:
     return {
+      ...state,
       syncing: false,
       entities: {
         ...state.entities,

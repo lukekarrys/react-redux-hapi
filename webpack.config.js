@@ -29,6 +29,7 @@ module.exports = {
 
   devtool: isDev ? 'cheap-module-eval-source-map' : 'source-map',
   devServer: Object.assign({}, Config.webpackDev, {
+    quiet: true,
     noInfo: true,
     // webpack-dev-server isn't used to serve any other assets
     contentBase: false
