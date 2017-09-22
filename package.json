@@ -1,6 +1,6 @@
 {
   "name": "react-redux-hapi",
-  "description": "Example for intergrating React, Redux, and Hapi.",
+  "description": "Example for integrating React, Redux, and Hapi.",
   "version": "1.0.0",
   "author": "Luke <luke@andyet.net>",
   "bugs": {
