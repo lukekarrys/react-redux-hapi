@@ -1,5 +1,7 @@
 # react-redux-hapi
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/lukekarrys/react-redux-hapi.svg)](https://greenkeeper.io/)
+
 [![Build Status](https://travis-ci.org/lukekarrys/react-redux-hapi.png?branch=master)](https://travis-ci.org/lukekarrys/react-redux-hapi)
 
 This is an barebones example server that uses Hapi for generating HTML from
