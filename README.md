@@ -1,5 +1,7 @@
 # react-redux-hapi
 
+[![Build Status](https://travis-ci.org/lukekarrys/react-redux-hapi.png?branch=master)](https://travis-ci.org/lukekarrys/react-redux-hapi)
+
 This is an barebones example server that uses Hapi for generating HTML from
 React/Redux which then gets picked up client side.
 
