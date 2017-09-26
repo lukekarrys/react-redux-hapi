@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { values } from 'lodash';
 import * as ACTIONS from '../actions';
+import Error from '../components/error';
+import Loading from '../components/loading';
 
 class Locations extends React.Component {
   static fetchData = ACTIONS.fetchLocations
@@ -12,34 +14,31 @@ class Locations extends React.Component {
   }
 
   render() {
-    const { locations, syncing } = this.props;
+    const { locations, syncing, error } = this.props;
 
-    if (syncing) {
-      return (
-        <div>
-          <h1>Loading</h1>
-        </div>
-      );
-    }
+    if (syncing) return <Loading />;
+    if (error) return <Error error={error} />;
 
     return (
-      <div>
-        <ul>
-          {locations.map((location) => (
-            <li key={location.woeid}>
-              <Link to={`/locations/${location.woeid}`}>{location.title}</Link>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <ul>
+        {locations.map((location) => (
+          <li key={location.woeid}>
+            <Link to={`/locations/${location.woeid}`}>{location.title}</Link>
+          </li>
+        ))}
+      </ul>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
-  locations: values(state.locations.entities),
-  syncing: state.locations.syncing
-});
+const mapStateToProps = ({ locations }, props) => {
+  const key = ACTIONS.fetchLocations(props.match.params, true);
+  return {
+    locations: values(locations.entities),
+    syncing: locations.syncing[key],
+    error: locations.error[key]
+  };
+};
 
 const mapPropsToDispatch = {
   fetchLocations: ACTIONS.fetchLocations

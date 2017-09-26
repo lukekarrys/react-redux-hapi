@@ -1,44 +1,45 @@
 import ActionNames from 'action-names';
 import { normalize } from 'normalizr';
-import { each, omit } from 'lodash';
+import ms from 'ms';
 import Api from './api';
 
-export default ({ schema, resource, request }) => (params) => (dispatch, getState) => {
+export default ({ schema, resource, request }) => (params, urlOnly) => {
   const types = ActionNames(resource);
+  const url = request(params);
 
-  dispatch({
-    type: types.fetchStart
-  });
+  if (urlOnly) return url;
 
-  const requestOptions = request(params);
-  const url = typeof requestOptions === 'string' ? requestOptions : requestOptions.url;
-  const options = typeof requestOptions === 'string' ? {} : omit(requestOptions, 'url');
+  return (dispatch, getState) => {
+    const lastSynced = getState()[resource].lastSynced[url];
 
-  return Api.get(url, options)
-    .then((response) => {
-      const { data } = response;
-      const { entities, result } = normalize(data, schema);
+    if (lastSynced && Date.now() - lastSynced <= ms('5m')) {
+      return Promise.resolve();
+    }
 
-      each(entities, (values, key) => {
-        if (key !== resource) {
-          dispatch({
-            type: ActionNames(key).fetchSuccess,
-            payload: { entities: entities[key] }
-          });
-        }
-      });
-
-      dispatch({
-        type: types.fetchSuccess,
-        payload: { entities: entities[resource] }
-      });
-
-      return { entities, result };
-    })
-    .catch((err) => {
-      dispatch({
-        type: types.fetchError,
-        payload: err
-      });
+    dispatch({
+      type: types.fetchStart,
+      meta: { key: url }
     });
+
+    return Api.get(url)
+      .then((response) => {
+        const { data } = response;
+        const { entities, result } = normalize(data, schema);
+
+        dispatch({
+          type: types.fetchSuccess,
+          payload: { entities: entities[resource] },
+          meta: { key: url }
+        });
+
+        return { entities, result };
+      })
+      .catch((err) => {
+        dispatch({
+          type: types.fetchError,
+          payload: err,
+          meta: { key: url }
+        });
+      });
+  };
 };

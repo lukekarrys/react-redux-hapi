@@ -12,24 +12,29 @@ describe('Basic page tests', () => {
   afterEach(async () => await Fixtures.nockDone());
 
   it('renders the locations page', () => {
-    Fixtures.nockApi().get('/location/search/?lattlong=34.316800,-111.132717').reply(200, Fixtures.locations());
+    const data = Fixtures.locations();
+    Fixtures.nockApi().get('/location/search/?lattlong=34.316800,-111.132717').reply(200, data);
 
     return server.inject('/locations').then((res) => {
       expect(res.statusCode).to.equal(200);
-      expect(res.result).to.include('<script>__INITIAL_DATA__=');
-      expect(res.result).to.include('data-react-checksum');
+      data.forEach((l) => {
+        expect(res.result).to.include(`<li><a href="/locations/${l.woeid}">${l.title}</a></li>`);
+        expect(res.result).to.include(`,"title":"${l.title}",`);
+        expect(res.result).to.include(`,"woeid":${l.woeid},`);
+      });
       return res.result;
     });
   });
 
   it('renders a location page', () => {
     const id = 2;
-    Fixtures.nockApi().get(`/location/${id}`).reply(200, Fixtures.location({ woeid: id }));
+    const data = Fixtures.location({ woeid: id });
+    Fixtures.nockApi().get(`/location/${id}`).reply(200, data);
 
     return server.inject(`/locations/${id}`).then((res) => {
       expect(res.statusCode).to.equal(200);
-      expect(res.result).to.include('<script>__INITIAL_DATA__=');
-      expect(res.result).to.include('data-react-checksum');
+      expect(res.result).to.include(`<h1>${data.title}</h1>`);
+      expect(res.result).to.include(`,"title":"${data.title}",`);
       return res.result;
     });
   });
