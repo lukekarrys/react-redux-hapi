@@ -1,6 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as ACTIONS from '../actions';
+import Error from '../components/error';
+import Loading from '../components/loading';
+import Forecast from '../components/forecast';
 
 class Location extends React.Component {
   static fetchData = ACTIONS.fetchLocation
@@ -10,38 +13,26 @@ class Location extends React.Component {
   }
 
   render() {
-    const { location, syncing } = this.props;
+    const { location, syncing, error } = this.props;
 
-    if (syncing) {
-      return (
-        <div>
-          <h1>Loading</h1>
-        </div>
-      );
-    }
+    if (syncing) return <Loading />;
+    if (error) return <Error error={error} />;
 
-    return (
-      <div>
-        <h1>{location.title}</h1>
-        <h2>Forecast</h2>
-        {location.consolidated_weather.map((forecast) => (
-          <div key={forecast.id}>
-            <h3>{forecast.applicable_date}</h3>
-            <h4>{forecast.min_temp} / {forecast.max_temp}</h4>
-          </div>
-        ))}
-      </div>
-    );
+    return [
+      <h1 key='location-title'>{location.title}</h1>,
+      <h2 key='location-subtitle'>Forecast</h2>,
+      <Forecast key='location-forecast' weather={location.consolidated_weather} />
+    ];
   }
 }
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = ({ locations }, props) => {
   const { id } = props.match.params;
-  const { locations: { entities: locations, syncing } } = state;
-  const location = locations[id];
+  const key = ACTIONS.fetchLocation(props.match.params, true);
   return {
-    syncing,
-    location
+    location: locations.entities[id],
+    syncing: locations.syncing[key],
+    error: locations.error[key]
   };
 };
 
